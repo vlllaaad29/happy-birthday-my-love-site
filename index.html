@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Happy Birthday 💋</title>
   <style>
     body {
@@ -11,6 +11,11 @@
       background: #ffe1ec;
       min-height: 100vh;
       overflow-x: hidden;
+      color: #ff497c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
     .background {
       position: fixed;
@@ -19,222 +24,250 @@
       background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
       z-index: 1;
       transition: filter 0.7s;
-    }
-    .blur {
       filter: blur(14px) brightness(0.7);
     }
-    .noblur {
+    .background.noblur {
       filter: none;
     }
     h1 {
       position: relative;
-      z-index: 2;
-      text-align: center;
-      font-size: 2.8em;
+      z-index: 3;
       margin-top: 40px;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
+      font-size: 2.8em;
       letter-spacing: 2px;
       color: #e8537a;
       text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
-    }
-    /* Самолетик */
-    .plane {
-      position: fixed;
-      top: 20vh;
-      left: -100px;
-      font-size: 60px;
-      z-index: 10001;
-      cursor: pointer;
+      cursor: default;
       user-select: none;
-      pointer-events: auto;
-      animation: fly-plane 4s linear forwards;
-      transition: filter 0.2s;
     }
-    .plane:active {
-      filter: brightness(1.5) drop-shadow(0 0 8px #fff);
-    }
-    @keyframes fly-plane {
-      0% { left: -100px; }
-      100% { left: 110vw; }
-    }
-    /* Overlay */
-    #startOverlay {
+    .button-container {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       z-index: 20000;
-      transition: opacity 0.7s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
-    #startOverlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    #startOverlay h2 {
-      margin-bottom: 28px;
-      font-size: 2.4em;
-      text-align: center;
-      letter-spacing: 2px;
-    }
-    #startOverlay button {
-      font-size: 1.2em;
-      padding: 12px 34px;
+    #startButton {
+      font-size: 1.6em;
+      padding: 16px 48px;
       background: #e8537a;
       border: none;
       color: #fff;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: background 0.2s;
-      box-shadow: 0 2px 14px 0 rgba(232,83,122,0.18);
+      box-shadow: 0 4px 20px rgba(232,83,122,0.4);
+      transition: background 0.3s ease, transform 0.2s ease;
     }
-    #startOverlay button:hover {
+    #startButton:hover {
       background: #ff639b;
+      transform: scale(1.05);
     }
-    /* Модалка с текстом */
+
+    iframe {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    #timecode {
+      margin-top: 14px;
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #e8537a;
+      text-shadow: 1px 1px 5px rgba(255,105,180,0.6);
+      cursor: pointer;
+      user-select: none;
+      z-index: 3;
+      transition: color 0.3s;
+    }
+    #timecode:hover {
+      color: #ff80ab;
+      text-shadow: 2px 2px 8px rgba(255,105,180,0.8);
+    }
+
+    /* Модалка для поздравления */
     #planeMessage {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 20001;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: 90vw;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 0 30px #ff80abaa;
+      color: #ff497c;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 600;
       font-size: 1.5em;
+      line-height: 1.6;
+      padding: 30px 25px;
+      text-align: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s;
+      z-index: 20001;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      user-select: none;
     }
     #planeMessage.active {
       opacity: 1;
       pointer-events: all;
+      transform: translate(-50%, -50%) scale(1);
     }
-    #planeMessage button {
-      margin-top: 30px;
-      font-size: 1.1em;
-      padding: 10px 22px;
-      background: #e8537a;
-      border: none;
-      color: #fff;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    #planeMessage button:hover {
-      background: #ff639b;
+    #planeMessage div {
+      background: linear-gradient(135deg, #ff80ab, #e91e63);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow:
+        2px 2px 6px rgba(255, 105, 180, 0.5),
+        0 0 8px rgba(255, 105, 180, 0.7);
+      font-weight: 700;
+      padding: 0 10px;
+      user-select: text;
     }
     #planeMessage img {
       margin-top: 20px;
       max-width: 340px;
-      border-radius: 12px;
+      border-radius: 16px;
       box-shadow: 0 0 20px #ffb6c1;
+      user-select: none;
     }
-    @media (max-width: 600px) {
-      h1 { font-size: 2em; margin-top: 18px;}
-      #planeMessage { font-size: 1.1em; }
-      #startOverlay h2 { font-size: 1.4em; }
+    #planeMessage button {
+      margin-top: 30px;
+      font-size: 1.1em;
+      padding: 12px 30px;
+      background: #e8537a;
+      border: none;
+      color: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(232,83,122,0.6);
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+    #planeMessage button:hover {
+      background: #ff639b;
+    }
+
+    /* Фейерверки — шарики */
+    .firework-ball {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: firework-rise 1.2s forwards, firework-fade 1s 1.2s forwards;
+      mix-blend-mode: screen;
+    }
+    @keyframes firework-rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-150px) scale(0.5);
+        opacity: 1;
+      }
+    }
+    @keyframes firework-fade {
+      from {opacity: 1;}
+      to {opacity: 0;}
     }
   </style>
 </head>
 <body>
-  <div class="background blur" id="bgLayer"></div>
-  <div id="startOverlay">
-    <h2>🎉 Готов к празднику? 🎉</h2>
-    <button onclick="startCelebration()">Начнём веселье!</button>
+  <div class="background" id="bgLayer"></div>
+
+  <div class="button-container" id="startOverlay">
+    <button id="startButton">Готова?)</button>
   </div>
+
   <h1>Happy Birthday 💋</h1>
-  <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
-          width="0" height="0" style="display:none;" allow="autoplay"></iframe>
+  <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI" allow="autoplay"></iframe>
   <audio id="bgMusic" loop>
-    <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
+    <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Модалка для поздравления -->
+  <div id="timecode">Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с</div>
+
   <div id="planeMessage">
-    <div id="planeText" style="max-width: 600px; text-align: center;">
-      <div style="margin-bottom: 18px;">
-        Красавица моя, поздравляю тебя!<br>
-        Желаю всегда оставаться такой же прекрасной, умной и невероятной.<br>
-        Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья…<br>
-        ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋<br><br>
-        <b>ILY</b>
-      </div>
-      <img src="https://i.pinimg.com/564x/17/42/5d/17425db779eebd0c6c308b2d267f0d41.jpg" alt="Поздравление"/>
+    <div>
+      Красавица моя, поздравляю тебя!<br />
+      Желаю всегда оставаться такой же прекрасной, умной и невероятной.<br />
+      Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья…<br />
+      ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋<br /><br />
+      <b>ILY</b>
     </div>
+    <img
+      src="https://i.pinimg.com/564x/17/42/5d/17425db779eebd0c6c308b2d267f0d41.jpg"
+      alt="Поздравление"
+    />
     <button onclick="closePlaneMessage()">Закрыть</button>
   </div>
 
   <script>
-    let musicStarted = false;
-    function startCelebration() {
-      // Убираем overlay и размытие с фона
-      document.getElementById('startOverlay').classList.add('hidden');
-      document.getElementById('bgLayer').classList.remove('blur');
-      document.getElementById('bgLayer').classList.add('noblur');
-      startMusic();
-      setTimeout(() => { // overlay удаляем совсем через анимацию
-        document.getElementById('startOverlay').style.display = 'none';
-      }, 800);
-      startPlanes();
-    }
+    const bgLayer = document.getElementById('bgLayer');
+    const startOverlay = document.getElementById('startOverlay');
+    const startButton = document.getElementById('startButton');
+    const bgMusic = document.getElementById('bgMusic');
+    const planeMessage = document.getElementById('planeMessage');
+    const timecode = document.getElementById('timecode');
 
-    function startMusic() {
-      if (!musicStarted) {
-        let audio = document.getElementById('bgMusic');
-        if (audio) {
-          audio.currentTime = 0;
-          audio.play().catch(()=>{});
-        }
-        musicStarted = true;
-      }
-    }
-
-    function launchPlane() {
-      const plane = document.createElement('div');
-      plane.className = 'plane';
-      plane.innerText = '✈️';
-      // Рандомная высота пролета 15% - 70%
-      const top = 15 + Math.random() * 55;
-      plane.style.top = top + 'vh';
-      plane.onclick = function() {
-        showPlaneMessage();
-        plane.remove();
-      };
-      plane.addEventListener('animationend', () => plane.remove());
-      document.body.appendChild(plane);
-    }
-    function startPlanes() {
-      // Первый самолётик сразу
-      launchPlane();
-      // Потом периодически
-      window.planeInterval = setInterval(() => {
-        launchPlane();
-      }, 3000 + Math.random() * 1000);
-    }
-    function showPlaneMessage() {
-      const msg = document.getElementById('planeMessage');
-      msg.classList.add('active');
-    }
-    function closePlaneMessage() {
-      const msg = document.getElementById('planeMessage');
-      msg.classList.remove('active');
-    }
-    // Отключаем взаимодействие до нажатия
-    window.addEventListener('DOMContentLoaded', function() {
-      let audio = document.getElementById('bgMusic');
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-      // Чтобы не запускались самолёты и музыка до нажатия
+    // Запуск музыки и убирание оверлея
+    startButton.addEventListener('click', () => {
+      startOverlay.style.display = 'none';
+      bgLayer.classList.add('noblur');
+      playMusic();
+      startFireworks();
     });
+
+    function playMusic() {
+      bgMusic.currentTime = 0;
+      bgMusic.play().catch(() => {});
+    }
+
+    // Создание фейерверков — шариков
+    function createFireworkBall() {
+      const ball = document.createElement('div');
+      ball.classList.add('firework-ball');
+
+      const size = Math.random() * 12 + 10; // 10-22 px
+      ball.style.width = size + 'px';
+      ball.style.height = size + 'px';
+
+      const colors = ['#ff80ab', '#e91e63', '#ff4081', '#f50057', '#ff1744'];
+      ball.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+      ball.style.left = Math.random() * window.innerWidth + 'px';
+      ball.style.top = window.innerHeight + 'px';
+
+      document.body.appendChild(ball);
+
+      ball.addEventListener('animationend', () => ball.remove());
+    }
+
+    function startFireworks() {
+      const interval = setInterval(() => {
+        createFireworkBall();
+      }, 150);
+
+      // Остановим фейерверк через 10 секунд
+      setTimeout(() => clearInterval(interval), 10000);
+    }
+
+    // Показать поздравление плавно
+    timecode.addEventListener('click', () => {
+      if (!planeMessage.classList.contains('active')) {
+        planeMessage.classList.add('active');
+      }
+    });
+
+    function closePlaneMessage() {
+      planeMessage.classList.remove('active');
+    }
   </script>
 </body>
 </html>
