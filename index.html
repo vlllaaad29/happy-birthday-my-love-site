@@ -4,10 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Happy Birthday 💋</title>
-
-  <!-- Подключаем шрифт Pacifico -->
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,7 +16,6 @@
       z-index: 1;
     }
 
-    /* Новый фоновый слой */
     .background {
       position: fixed;
       z-index: 0;
@@ -109,36 +105,19 @@
       text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
     }
 
-    /* Конфетти */
-    .confetti {
+    /* Сердечки */
+    .falling-heart {
       position: fixed;
-      width: 10px;
-      height: 10px;
-      background-color: red;
-      top: -10px;
-      animation: fall 5s linear forwards;
-      opacity: 0.8;
-      z-index: 9999;
+      left: 0;
+      top: -60px;
+      font-size: 40px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10001;
+      transition: filter 0.2s;
     }
-    @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(100vh) rotate(360deg); }
-    }
-
-    /* Шарики */
-    .balloon {
-      position: fixed;
-      bottom: -100px;
-      width: 50px;
-      height: 70px;
-      border-radius: 50%;
-      background: red;
-      animation: balloonFloat 8s linear infinite;
-      z-index: 9998;
-    }
-    @keyframes balloonFloat {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-110vh); opacity: 0; }
+    .falling-heart:active {
+      filter: brightness(1.7) drop-shadow(0 0 8px #fff);
     }
 
     /* Кнопка старта */
@@ -203,10 +182,7 @@
   </style>
 </head>
 <body>
-  <!-- Новый фоновый размытый слой -->
   <div class="background blur" id="bgLayer"></div>
-
-  <!-- Оверлей с кнопкой -->
   <div id="startOverlay">
     <h2>🎉 Готов к празднику? 🎉</h2>
     <button onclick="startCelebration()">Начать праздник</button>
@@ -224,15 +200,12 @@
     </div>
   </div>
 
-  <!-- Музыка -->
   <audio id="bgMusic" loop>
     <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Счётчик сердечек -->
   <div id="heartCounter">Сердечки: <span id="score">0</span>/10</div>
 
-  <!-- Сюрприз с поздравлением -->
   <div id="surprise">
     <p style="max-width: 600px; line-height: 1.5em; margin-bottom: 20px;">
       Красавица моя, поздравляю тебя! 💖<br><br>
@@ -247,10 +220,88 @@
   <script>
     let score = 0;
     let maxScore = 10;
-    let heartInterval;
+    let heartInterval = null;
+    let gameActive = false;
 
     function startCelebration() {
       document.getElementById('startOverlay').style.display = 'none';
       document.getElementById('bgLayer').classList.add('noblur');
+      document.getElementById('heartCounter').style.display = 'block';
+      document.getElementById('score').textContent = '0';
+      score = 0;
+      gameActive = true;
+      if (document.getElementById('bgMusic')) {
+        document.getElementById('bgMusic').play().catch(()=>{});
+      }
+      startHeartRain();
+    }
 
-      let
+    function createHeart() {
+      if (!gameActive) return;
+      const heart = document.createElement('div');
+      heart.className = 'falling-heart';
+      heart.innerText = '💖';
+      // Рандомная позиция слева
+      heart.style.left = (5 + Math.random() * 90) + 'vw';
+      // Рандомный размер
+      let size = 30 + Math.random() * 40;
+      heart.style.fontSize = size + 'px';
+      // Рандомная скорость
+      let duration = 2.8 + Math.random() * 1.7; // от 2.8 до 4.5 сек
+      heart.style.transition = `top ${duration}s linear`;
+      // Добавляем на страницу
+      document.body.appendChild(heart);
+
+      // Запуск анимации вниз
+      setTimeout(() => {
+        heart.style.top = '100vh';
+      }, 20);
+
+      // Клик по сердечку
+      heart.onclick = function() {
+        if (!gameActive) return;
+        heart.remove();
+        score++;
+        document.getElementById('score').textContent = score;
+        if (score >= maxScore) {
+          endGame();
+        }
+      };
+
+      // Если не поймал — удалить
+      heart.addEventListener('transitionend', () => {
+        heart.remove();
+      });
+    }
+
+    function startHeartRain() {
+      if (heartInterval) clearInterval(heartInterval);
+      heartInterval = setInterval(() => {
+        if (score < maxScore) {
+          createHeart();
+        }
+      }, 600); // каждые 0.6 сек
+    }
+
+    function endGame() {
+      gameActive = false;
+      clearInterval(heartInterval);
+      document.getElementById('heartCounter').style.display = 'none';
+      setTimeout(() => {
+        document.getElementById('surprise').style.opacity = 1;
+        document.getElementById('surprise').style.pointerEvents = 'all';
+      }, 500);
+      // Удаляем все оставшиеся сердечки
+      document.querySelectorAll('.falling-heart').forEach(e => e.remove());
+    }
+
+    // Чтобы музыка не играла до старта
+    window.addEventListener('DOMContentLoaded', function() {
+      if (document.getElementById('bgMusic')) {
+        document.getElementById('bgMusic').pause();
+        document.getElementById('bgMusic').currentTime = 0;
+      }
+    });
+  </script>
+</body>
+</html>
