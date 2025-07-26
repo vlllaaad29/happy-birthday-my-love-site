@@ -6,16 +6,34 @@
   <title>Happy Birthday 💋</title>
   <style>
     body {
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       text-align: center;
       padding: 30px;
       background: linear-gradient(135deg,#ffdde1,#ee9ca7);
       color: #333;
+      overflow: hidden; /* чтобы сердечки не появлялись за пределами */
+      animation: bgAnimation 8s infinite alternate;
     }
+
+    /* Плавное мерцание фона */
+    @keyframes bgAnimation {
+      0%   { background: linear-gradient(135deg,#ffdde1,#ee9ca7); }
+      50%  { background: linear-gradient(135deg,#fbc2eb,#a18cd1); }
+      100% { background: linear-gradient(135deg,#ff9a9e,#fecfef); }
+    }
+
     h1 {
-      font-size: 2.5em;
+      font-size: 2.8em;
       margin-bottom: 20px;
+      animation: fadeZoom 2s ease-in-out infinite alternate;
     }
+
+    /* Анимация заголовка */
+    @keyframes fadeZoom {
+      0% { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+
     iframe {
       max-width: 90%;
       height: 315px;
@@ -24,28 +42,49 @@
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
+
     .button {
       margin-top: 10px;
     }
+
     button {
       padding: 15px 30px;
       font-size: 18px;
-      background-color: #ff4081;
+      background: linear-gradient(90deg,#ff4081,#ff80ab);
       color: white;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      transition: background-color .3s;
+      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 10px rgba(255,64,129,0.6);
     }
-    button:hover {
-      background-color: #e91e63;
+
+    /* Пульсация кнопки */
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 10px rgba(255,64,129,0.6); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,64,129,0.8); }
+      100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,64,129,0.6); }
     }
+
     .timecode {
       margin-top: 12px;
       font-size: 1.1em;
-      color: #fff; /* белый цвет */
+      color: #fff;
       font-weight: bold;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.4); /* легкая тень для читаемости */
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+    }
+
+    /* Сердечки */
+    .heart {
+      position: fixed;
+      font-size: 20px;
+      animation: fall 6s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10%); opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
     }
   </style>
 </head>
@@ -55,11 +94,29 @@
     title="YouTube video player" allowfullscreen></iframe>
   <div class="button">
     <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
-      Смотреть «Человек‑паук: Высокое напряжение» на Kinogo
+      Нажми)
     </button>
     <div class="timecode">
       ❗ Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с 💕
     </div>
   </div>
+
+  <script>
+    // Создание падающих сердечек
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 15 + "px";
+      heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+      heart.innerHTML = ["💖","💕","❣️","❤️","💓","💗"][Math.floor(Math.random()*6)];
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 7000);
+    }
+    setInterval(createHeart, 500); // Каждые 0.5 сек новое сердечко
+  </script>
 </body>
-</html
+</html>
