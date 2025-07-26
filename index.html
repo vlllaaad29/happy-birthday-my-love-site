@@ -17,7 +17,6 @@
       overflow: hidden;
       position: relative;
       z-index: 1;
-      /* background убран! */
     }
 
     /* Новый фоновый слой */
@@ -160,6 +159,47 @@
       font-size: 2em;
       text-align: center;
     }
+
+    /* Счётчик сердечек */
+    #heartCounter {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.4);
+      padding: 10px 20px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 9999;
+      display: none;
+    }
+
+    /* Финальное поздравление */
+    #surprise {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      font-size: 1.4em;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      z-index: 10001;
+    }
+    #surprise img {
+      max-width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,105,180,0.6);
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -188,49 +228,29 @@
   <audio id="bgMusic" loop>
     <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
   </audio>
+
+  <!-- Счётчик сердечек -->
+  <div id="heartCounter">Сердечки: <span id="score">0</span>/10</div>
+
+  <!-- Сюрприз с поздравлением -->
+  <div id="surprise">
+    <p style="max-width: 600px; line-height: 1.5em; margin-bottom: 20px;">
+      Красавица моя, поздравляю тебя! 💖<br><br>
+      Желаю всегда оставаться такой же прекрасной, умной и невероятной.<br>
+      Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья…<br>
+      ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋<br><br>
+      <b>ILY ❤️</b>
+    </p>
+    <img src="https://i.pinimg.com/originals/0a/17/67/0a176708ae70cb5fdb1d0b68047b5c52.jpg" alt="Поздравление">
+  </div>
+
   <script>
+    let score = 0;
+    let maxScore = 10;
+    let heartInterval;
+
     function startCelebration() {
       document.getElementById('startOverlay').style.display = 'none';
-
-      // Убираем размытие с фона
       document.getElementById('bgLayer').classList.add('noblur');
 
-      // Запуск музыки с громкостью 10%
-      let music = document.getElementById('bgMusic');
-      music.volume = 0.1;
-      music.play();
-
-      // Запуск конфетти
-      setInterval(createConfetti, 200);
-
-      // Запуск шариков
-      setInterval(createBalloon, 1000);
-    }
-
-    // Конфетти
-    function createConfetti() {
-      const colors = ['#ff4081','#ff80ab','#ffd54f','#4fc3f7','#81c784','#ba68c8'];
-      const conf = document.createElement('div');
-      conf.classList.add('confetti');
-      conf.style.left = Math.random() * window.innerWidth + 'px';
-      conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-      conf.style.width = conf.style.height = Math.random()*8+4+'px';
-      conf.style.animationDuration = Math.random()*3+3+'s';
-      document.body.appendChild(conf);
-      setTimeout(()=>conf.remove(), 6000);
-    }
-
-    // Шарики
-    function createBalloon() {
-      const colors = ['#ff4081','#ff80ab','#ffeb3b','#4fc3f7','#81c784','#ba68c8'];
-      const balloon = document.createElement('div');
-      balloon.classList.add('balloon');
-      balloon.style.left = Math.random() * (window.innerWidth-60) + 'px';
-      balloon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-      balloon.style.animationDuration = Math.random()*4+6+'s';
-      document.body.appendChild(balloon);
-      setTimeout(()=>balloon.remove(), 8000);
-    }
-  </script>
-</body>
-</html>
+      let
