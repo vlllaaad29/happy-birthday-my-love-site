@@ -15,16 +15,24 @@
       padding: 30px;
       color: #fff;
       overflow: hidden;
-      /* Анимированный фон */
+      position: relative;
+      z-index: 1;
+      /* background убран! */
+    }
+
+    /* Новый фоновый слой */
+    .background {
+      position: fixed;
+      z-index: 0;
+      top: 0; left: 0; width: 100vw; height: 100vh;
       background: linear-gradient(45deg, #ffdde1, #ee9ca7, #ff80ab, #ffb6c1);
       background-size: 400% 400%;
       animation: gradientMove 12s ease infinite;
-    }
-
-    /* Эффект размытия фона */
-    .blur {
       filter: blur(6px);
       transition: filter 0.3s ease;
+    }
+    .background.noblur {
+      filter: none;
     }
 
     @keyframes gradientMove {
@@ -42,6 +50,8 @@
         0 0 20px rgba(255,64,129,0.6),
         0 0 30px rgba(255,105,180,0.8);
       animation: glow 3s ease-in-out infinite alternate;
+      position: relative;
+      z-index: 2;
     }
 
     @keyframes glow {
@@ -66,10 +76,14 @@
       margin-bottom: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 2;
     }
 
     .button {
       margin-top: 10px;
+      position: relative;
+      z-index: 2;
     }
 
     button {
@@ -148,7 +162,10 @@
     }
   </style>
 </head>
-<body class="blur">
+<body>
+  <!-- Новый фоновый размытый слой -->
+  <div class="background blur" id="bgLayer"></div>
+
   <!-- Оверлей с кнопкой -->
   <div id="startOverlay">
     <h2>🎉 Готов к празднику? 🎉</h2>
@@ -176,7 +193,7 @@
       document.getElementById('startOverlay').style.display = 'none';
 
       // Убираем размытие с фона
-      document.body.classList.remove('blur');
+      document.getElementById('bgLayer').classList.add('noblur');
 
       // Запуск музыки с громкостью 10%
       let music = document.getElementById('bgMusic');
