@@ -1,272 +1,218 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Happy Birthday 💋</title>
+
+  <!-- Подключаем шрифт Pacifico -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Montserrat', Arial, sans-serif;
-      background: #ffe1ec;
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: #ff497c;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-    }
-    .background {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-      z-index: 1;
-      transition: filter 0.7s;
-      filter: blur(14px) brightness(0.7);
-    }
-    .background.noblur {
-      filter: none;
-    }
-    h1 {
-      position: relative;
-      z-index: 3;
-      margin-top: 40px;
-      margin-bottom: 10px;
-      font-size: 2.8em;
-      letter-spacing: 2px;
-      color: #e8537a;
-      text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
-      cursor: default;
-      user-select: none;
-    }
-    .button-container {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 20000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-    #startButton {
-      font-size: 1.6em;
-      padding: 16px 48px;
-      background: #e8537a;
-      border: none;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
       color: #fff;
-      border-radius: 12px;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(232,83,122,0.4);
-      transition: background 0.3s ease, transform 0.2s ease;
+      overflow: hidden;
+      /* Анимированный фон */
+      background: linear-gradient(45deg, #ffdde1, #ee9ca7, #ff80ab, #ffb6c1);
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
     }
-    #startButton:hover {
-      background: #ff639b;
-      transform: scale(1.05);
+
+    /* Эффект размытия фона */
+    .blur {
+      filter: blur(6px);
+      transition: filter 0.3s ease;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 
+        0 0 10px rgba(255,255,255,0.8),
+        0 0 20px rgba(255,64,129,0.6),
+        0 0 30px rgba(255,105,180,0.8);
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      0% {
+        text-shadow: 
+          0 0 10px rgba(255,255,255,0.7),
+          0 0 20px rgba(255,105,180,0.6),
+          0 0 30px rgba(255,20,147,0.8);
+      }
+      100% {
+        text-shadow: 
+          0 0 15px rgba(255,255,255,1),
+          0 0 30px rgba(255,182,193,0.8),
+          0 0 40px rgba(255,105,180,1);
+      }
     }
 
     iframe {
-      width: 0;
-      height: 0;
-      display: none;
-    }
-
-    #timecode {
-      margin-top: 14px;
-      font-size: 1.1em;
-      font-weight: 600;
-      color: #e8537a;
-      text-shadow: 1px 1px 5px rgba(255,105,180,0.6);
-      cursor: pointer;
-      user-select: none;
-      z-index: 3;
-      transition: color 0.3s;
-    }
-    #timecode:hover {
-      color: #ff80ab;
-      text-shadow: 2px 2px 8px rgba(255,105,180,0.8);
-    }
-
-    /* Модалка для поздравления */
-    #planeMessage {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      width: 90vw;
-      max-width: 600px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      box-shadow: 0 0 30px #ff80abaa;
-      color: #ff497c;
-      font-family: 'Montserrat', Arial, sans-serif;
-      font-weight: 600;
-      font-size: 1.5em;
-      line-height: 1.6;
-      padding: 30px 25px;
-      text-align: center;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 20001;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      user-select: none;
-    }
-    #planeMessage.active {
-      opacity: 1;
-      pointer-events: all;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    #planeMessage div {
-      background: linear-gradient(135deg, #ff80ab, #e91e63);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow:
-        2px 2px 6px rgba(255, 105, 180, 0.5),
-        0 0 8px rgba(255, 105, 180, 0.7);
-      font-weight: 700;
-      padding: 0 10px;
-      user-select: text;
-    }
-    #planeMessage img {
-      margin-top: 20px;
-      max-width: 340px;
-      border-radius: 16px;
-      box-shadow: 0 0 20px #ffb6c1;
-      user-select: none;
-    }
-    #planeMessage button {
-      margin-top: 30px;
-      font-size: 1.1em;
-      padding: 12px 30px;
-      background: #e8537a;
+      max-width: 90%;
+      height: 315px;
       border: none;
-      color: #fff;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .button {
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: linear-gradient(90deg,#ff4081,#ff80ab);
+      color: white;
+      border: none;
       border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(232,83,122,0.6);
-      transition: background 0.3s ease;
-      user-select: none;
+      box-shadow: 0 0 15px rgba(255,64,129,0.6);
+      transition: transform 0.2s, box-shadow 0.3s;
     }
-    #planeMessage button:hover {
-      background: #ff639b;
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,105,180,0.8);
     }
 
-    /* Фейерверки — шарики */
-    .firework-ball {
+    .timecode {
+      margin-top: 12px;
+      font-size: 1.1em;
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+    }
+
+    /* Конфетти */
+    .confetti {
       position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      top: -10px;
+      animation: fall 5s linear forwards;
+      opacity: 0.8;
+      z-index: 9999;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+
+    /* Шарики */
+    .balloon {
+      position: fixed;
+      bottom: -100px;
+      width: 50px;
+      height: 70px;
       border-radius: 50%;
-      pointer-events: none;
-      animation: firework-rise 1.2s forwards, firework-fade 1s 1.2s forwards;
-      mix-blend-mode: screen;
+      background: red;
+      animation: balloonFloat 8s linear infinite;
+      z-index: 9998;
     }
-    @keyframes firework-rise {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-150px) scale(0.5);
-        opacity: 1;
-      }
+    @keyframes balloonFloat {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-110vh); opacity: 0; }
     }
-    @keyframes firework-fade {
-      from {opacity: 1;}
-      to {opacity: 0;}
+
+    /* Кнопка старта */
+    #startOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10000;
+    }
+    #startOverlay h2 {
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
     }
   </style>
 </head>
-<body>
-  <div class="background" id="bgLayer"></div>
-
-  <div class="button-container" id="startOverlay">
-    <button id="startButton">Готова?)</button>
+<body class="blur">
+  <!-- Оверлей с кнопкой -->
+  <div id="startOverlay">
+    <h2>🎉 Готов к празднику? 🎉</h2>
+    <button onclick="startCelebration()">Начать праздник</button>
   </div>
 
   <h1>Happy Birthday 💋</h1>
-  <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI" allow="autoplay"></iframe>
-  <audio id="bgMusic" loop>
-    <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg" />
-  </audio>
-
-  <div id="timecode">Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с</div>
-
-  <div id="planeMessage">
-    <div>
-      Красавица моя, поздравляю тебя!<br />
-      Желаю всегда оставаться такой же прекрасной, умной и невероятной.<br />
-      Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья…<br />
-      ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋<br /><br />
-      <b>ILY</b>
+  <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
+    title="YouTube video player" allowfullscreen></iframe>
+  <div class="button">
+    <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
+      Нажми)
+    </button>
+    <div class="timecode">
+      Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с
     </div>
-    <img
-      src="https://i.pinimg.com/564x/17/42/5d/17425db779eebd0c6c308b2d267f0d41.jpg"
-      alt="Поздравление"
-    />
-    <button onclick="closePlaneMessage()">Закрыть</button>
   </div>
 
+  <!-- Музыка -->
+  <audio id="bgMusic" loop>
+    <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
+  </audio>
   <script>
-    const bgLayer = document.getElementById('bgLayer');
-    const startOverlay = document.getElementById('startOverlay');
-    const startButton = document.getElementById('startButton');
-    const bgMusic = document.getElementById('bgMusic');
-    const planeMessage = document.getElementById('planeMessage');
-    const timecode = document.getElementById('timecode');
+    function startCelebration() {
+      document.getElementById('startOverlay').style.display = 'none';
 
-    // Запуск музыки и убирание оверлея
-    startButton.addEventListener('click', () => {
-      startOverlay.style.display = 'none';
-      bgLayer.classList.add('noblur');
-      playMusic();
-      startFireworks();
-    });
+      // Убираем размытие с фона
+      document.body.classList.remove('blur');
 
-    function playMusic() {
-      bgMusic.currentTime = 0;
-      bgMusic.play().catch(() => {});
+      // Запуск музыки с громкостью 10%
+      let music = document.getElementById('bgMusic');
+      music.volume = 0.1;
+      music.play();
+
+      // Запуск конфетти
+      setInterval(createConfetti, 200);
+
+      // Запуск шариков
+      setInterval(createBalloon, 1000);
     }
 
-    // Создание фейерверков — шариков
-    function createFireworkBall() {
-      const ball = document.createElement('div');
-      ball.classList.add('firework-ball');
-
-      const size = Math.random() * 12 + 10; // 10-22 px
-      ball.style.width = size + 'px';
-      ball.style.height = size + 'px';
-
-      const colors = ['#ff80ab', '#e91e63', '#ff4081', '#f50057', '#ff1744'];
-      ball.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
-      ball.style.left = Math.random() * window.innerWidth + 'px';
-      ball.style.top = window.innerHeight + 'px';
-
-      document.body.appendChild(ball);
-
-      ball.addEventListener('animationend', () => ball.remove());
+    // Конфетти
+    function createConfetti() {
+      const colors = ['#ff4081','#ff80ab','#ffd54f','#4fc3f7','#81c784','#ba68c8'];
+      const conf = document.createElement('div');
+      conf.classList.add('confetti');
+      conf.style.left = Math.random() * window.innerWidth + 'px';
+      conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      conf.style.width = conf.style.height = Math.random()*8+4+'px';
+      conf.style.animationDuration = Math.random()*3+3+'s';
+      document.body.appendChild(conf);
+      setTimeout(()=>conf.remove(), 6000);
     }
 
-    function startFireworks() {
-      const interval = setInterval(() => {
-        createFireworkBall();
-      }, 150);
-
-      // Остановим фейерверк через 10 секунд
-      setTimeout(() => clearInterval(interval), 10000);
-    }
-
-    // Показать поздравление плавно
-    timecode.addEventListener('click', () => {
-      if (!planeMessage.classList.contains('active')) {
-        planeMessage.classList.add('active');
-      }
-    });
-
-    function closePlaneMessage() {
-      planeMessage.classList.remove('active');
+    // Шарики
+    function createBalloon() {
+      const colors = ['#ff4081','#ff80ab','#ffeb3b','#4fc3f7','#81c784','#ba68c8'];
+      const balloon = document.createElement('div');
+      balloon.classList.add('balloon');
+      balloon.style.left = Math.random() * (window.innerWidth-60) + 'px';
+      balloon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      balloon.style.animationDuration = Math.random()*4+6+'s';
+      document.body.appendChild(balloon);
+      setTimeout(()=>balloon.remove(), 8000);
     }
   </script>
 </body>
