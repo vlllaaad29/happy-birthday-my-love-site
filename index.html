@@ -4,6 +4,10 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Happy Birthday 💋</title>
+
+  <!-- Подключаем шрифт Pacifico -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,6 +21,12 @@
       animation: gradientMove 12s ease infinite;
     }
 
+    /* Эффект размытия фона */
+    .blur {
+      filter: blur(6px);
+      transition: filter 0.3s ease;
+    }
+
     @keyframes gradientMove {
       0% {background-position: 0% 50%;}
       50% {background-position: 100% 50%;}
@@ -24,6 +34,7 @@
     }
 
     h1 {
+      font-family: 'Pacifico', cursive;
       font-size: 3em;
       margin-bottom: 20px;
       text-shadow: 
@@ -137,7 +148,7 @@
     }
   </style>
 </head>
-<body>
+<body class="blur">
   <!-- Оверлей с кнопкой -->
   <div id="startOverlay">
     <h2>🎉 Готов к празднику? 🎉</h2>
@@ -156,14 +167,17 @@
     </div>
   </div>
 
-<!-- Музыка -->
-<audio id="bgMusic" loop>
-  <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
-</audio>
+  <!-- Музыка -->
+  <audio id="bgMusic" loop>
+    <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
+  </audio>
   <script>
     function startCelebration() {
       document.getElementById('startOverlay').style.display = 'none';
-      
+
+      // Убираем размытие с фона
+      document.body.classList.remove('blur');
+
       // Запуск музыки с громкостью 10%
       let music = document.getElementById('bgMusic');
       music.volume = 0.1;
