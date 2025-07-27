@@ -1,3 +1,4 @@
+<!-- 💖 Объединённый файл index.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +6,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Happy Birthday 💋</title>
 
-  <!-- Красивый шрифт -->
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
   <style>
@@ -19,7 +19,6 @@
       position: relative;
     }
 
-    /* Двигающийся розовый градиент */
     #backgroundBlur {
       position: fixed;
       top: 0; left: 0;
@@ -94,6 +93,7 @@
       box-shadow: 0 0 15px rgba(255,64,129,0.6);
       transition: transform 0.2s, box-shadow 0.3s;
     }
+
     button:hover {
       transform: scale(1.05);
       box-shadow: 0 0 20px rgba(255,105,180,0.8);
@@ -107,23 +107,21 @@
       text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
     }
 
-    .confetti {
+    .confetti, .balloon, .heart-float {
       position: fixed;
+      z-index: 9999;
+    }
+
+    .confetti {
       width: 10px;
       height: 10px;
       background-color: pink;
       top: -10px;
       animation: fall 5s linear forwards;
       opacity: 0.8;
-      z-index: 9999;
-    }
-    @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(100vh) rotate(360deg); }
     }
 
     .balloon {
-      position: fixed;
       bottom: -100px;
       width: 50px;
       height: 70px;
@@ -132,9 +130,26 @@
       animation: balloonFloat 8s linear infinite;
       z-index: 9998;
     }
+
+    .heart-float {
+      color: #ff69b4;
+      font-size: 24px;
+      animation: floatHeart 4s ease-in-out infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+
     @keyframes balloonFloat {
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(-110vh); opacity: 0; }
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
     }
 
     canvas#fireworksCanvas {
@@ -159,11 +174,6 @@
       flex-direction: column;
       z-index: 10000;
     }
-    #startOverlay h2 {
-      margin-bottom: 20px;
-      font-size: 2em;
-      text-align: center;
-    }
 
     #messageOverlay {
       position: fixed;
@@ -180,6 +190,7 @@
       z-index: 20000;
       padding-left: 10%;
     }
+
     #messageOverlay.active {
       opacity: 1;
       visibility: visible;
@@ -207,6 +218,26 @@
       cursor: pointer;
     }
 
+    #heartsSection {
+      display: none;
+      z-index: 2;
+    }
+
+    .moment {
+      margin: 20px 0;
+    }
+
+    .moment img {
+      max-width: 80%;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .moment a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
     @media (max-width: 600px) {
       #messageOverlay p {
         font-size: 0.9em;
@@ -228,6 +259,7 @@
   <h1 onclick="showMessage()">Happy Birthday 💋</h1>
   <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
     title="YouTube video player" allowfullscreen></iframe>
+
   <div class="button">
     <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
       Нажми)
@@ -237,11 +269,33 @@
     </div>
   </div>
 
-  <!-- Кнопка перехода на hearts.html -->
   <div class="button" style="margin-top: 25px;">
-    <button onclick="window.location.href='hearts.html'">
-      Наши моменты 💖
-    </button>
+    <button onclick="showHearts()">Наши моменты 💖</button>
+  </div>
+
+  <div id="heartsSection">
+    <div class="button" style="margin-bottom: 20px;">
+      <button onclick="hideHearts()">← Назад к поздравлению</button>
+    </div>
+
+    <div class="moment">
+      <p>📍 Первый раз увиделись:</p>
+      <a href="https://maps.app.goo.gl/YkwfSRoBXZaQ71Ev7" target="_blank">Google Карта</a>
+    </div>
+    <div class="moment">
+      <p>💋 Первый поцелуй:</p>
+      <a href="https://maps.app.goo.gl/EPx6xSbdcXwkVXU99" target="_blank">Google Карта</a>
+    </div>
+    <div class="moment">
+      <p>📸 3 месяца вместе:</p>
+      <img src="your-photo.jpg" alt="3 месяца вместе">
+    </div>
+    <div class="moment">
+      <p>🎉 1 год впереди 💖</p>
+    </div>
+    <div class="moment">
+      <p>🔮 The Future 💍</p>
+    </div>
   </div>
 
   <audio id="bgMusic" loop>
@@ -266,6 +320,7 @@
       setInterval(createConfetti, 200);
       setInterval(createBalloon, 1000);
       startFireworks();
+      setInterval(createFloatingHeart, 800);
     }
 
     function createConfetti() {
@@ -291,6 +346,17 @@
       setTimeout(()=>balloon.remove(), 8000);
     }
 
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart-float');
+      heart.textContent = '💖';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.bottom = '0';
+      heart.style.position = 'fixed';
+      document.body.appendChild(heart);
+      setTimeout(()=>heart.remove(), 4000);
+    }
+
     function showMessage() {
       document.getElementById('messageOverlay').classList.add('active');
     }
@@ -301,7 +367,7 @@
 
     function startFireworks() {
       const canvas = document.getElementById('fireworksCanvas');
-      const ctx = canvas.getContext(' ');
+      const ctx = canvas.getContext('2d');
       resizeCanvas();
 
       window.addEventListener('resize', resizeCanvas);
@@ -358,7 +424,20 @@
       setInterval(createFirework, 1500);
       updateParticles();
     }
-  </script>
 
+    function showHearts() {
+      document.getElementById('heartsSection').style.display = 'block';
+      document.querySelector('iframe').style.display = 'none';
+      document.querySelectorAll('.button')[0].style.display = 'none';
+      document.querySelectorAll('.button')[1].style.display = 'none';
+    }
+
+    function hideHearts() {
+      document.getElementById('heartsSection').style.display = 'none';
+      document.querySelector('iframe').style.display = 'block';
+      document.querySelectorAll('.button')[0].style.display = 'block';
+      document.querySelectorAll('.button')[1].style.display = 'block';
+    }
+  </script>
 </body>
 </html>
