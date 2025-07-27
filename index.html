@@ -19,6 +19,7 @@
       position: relative;
     }
 
+    /* Двигающийся розовый градиент */
     #backgroundBlur {
       position: fixed;
       top: 0; left: 0;
@@ -215,6 +216,7 @@
   </style>
 </head>
 <body>
+
   <div id="backgroundBlur"></div>
   <canvas id="fireworksCanvas"></canvas>
 
@@ -224,14 +226,22 @@
   </div>
 
   <h1 onclick="showMessage()">Happy Birthday 💋</h1>
-  <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI" title="YouTube video player" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
+    title="YouTube video player" allowfullscreen></iframe>
   <div class="button">
-    <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">Нажми)</button>
-    <div class="timecode">Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с</div>
+    <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
+      Нажми)
+    </button>
+    <div class="timecode">
+      Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с
+    </div>
   </div>
 
-  <div class="button">
-    <button onclick="window.location.href='hearts.html'">Наши моменты 💖</button>
+  <!-- Кнопка перехода на hearts.html -->
+  <div class="button" style="margin-top: 25px;">
+    <button onclick="window.location.href='hearts.html'">
+      Наши моменты 💖
+    </button>
   </div>
 
   <audio id="bgMusic" loop>
@@ -291,10 +301,11 @@
 
     function startFireworks() {
       const canvas = document.getElementById('fireworksCanvas');
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext(' ');
       resizeCanvas();
 
       window.addEventListener('resize', resizeCanvas);
+
       let particles = [];
 
       function resizeCanvas() {
@@ -348,5 +359,6 @@
       updateParticles();
     }
   </script>
+
 </body>
 </html>
