@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Наши моменты 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(45deg, #ffb6c1, #ff69b4);
+      font-family: 'Pacifico', cursive;
+      color: #fff;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      font-size: 2.2em;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .heart {
+      background: pink;
+      width: 200px;
+      height: 180px;
+      position: relative;
+      display: inline-block;
+      margin: 20px;
+      transform: rotate(-45deg);
+      animation: pulse 2s infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 180px;
+      background: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -100px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 100px;
+      top: 0;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1) rotate(-45deg); }
+      50% { transform: scale(1.05) rotate(-45deg); }
+      100% { transform: scale(1) rotate(-45deg); }
+    }
+
+    .content {
+      position: relative;
+      top: 60px;
+      transform: rotate(45deg);
+      color: #d63384;
+      font-size: 1em;
+      font-weight: bold;
+      max-width: 120px;
+      margin: auto;
+      word-wrap: break-word;
+    }
+
+    .heart img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 5px;
+    }
+
+    a {
+      color: #fff;
+      font-size: 1.2em;
+      display: block;
+      margin-top: 40px;
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Наши сердечные моменты 💘</h1>
+
+  <!-- Первое сердечко -->
+  <div class="heart">
+    <div class="content">
+      August Griese<br>Berufskolleg<br>Löhne
+    </div>
+  </div>
+
+  <!-- Второе сердечко -->
+  <div class="heart">
+    <div class="content">
+      Magdeburger Str. 59<br>Herford
+    </div>
+  </div>
+
+  <!-- Третье сердечко с фото -->
+  <div class="heart">
+    <div class="content">
+      <img src="our-photo.jpg" alt="Мы 💑">
+      <div>3 месяца 💕</div>
+    </div>
+  </div>
+
+  <!-- Четвёртое сердечко -->
+  <div class="heart">
+    <div class="content">
+      1 год впереди 💖
+    </div>
+  </div>
+
+  <a href="index.html">← Назад к поздравлению</a>
+</body>
+</html>
+
