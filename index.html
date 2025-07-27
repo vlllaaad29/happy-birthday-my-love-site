@@ -15,11 +15,9 @@
       padding: 30px;
       color: #fff;
       overflow: hidden;
-      margin: 0;
-      position: relative;
     }
 
-    /* Размытый фон в отдельном div */
+    /* Движущийся фон */
     #backgroundBlur {
       position: fixed;
       top: 0; left: 0;
@@ -46,8 +44,6 @@
         0 0 20px rgba(255,64,129,0.6),
         0 0 30px rgba(255,105,180,0.8);
       animation: glow 3s ease-in-out infinite alternate;
-      position: relative;
-      z-index: 1;
     }
 
     @keyframes glow {
@@ -72,14 +68,10 @@
       margin-bottom: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      position: relative;
-      z-index: 1;
     }
 
     .button {
       margin-top: 10px;
-      position: relative;
-      z-index: 1;
     }
 
     button {
@@ -104,15 +96,7 @@
       color: #fff;
       font-weight: bold;
       text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
-      position: relative;
-      z-index: 1;
       cursor: pointer;
-      user-select: none;
-      transition: color 0.3s;
-    }
-    .timecode:hover {
-      color: #ff80ab;
-      text-shadow: 1px 1px 8px rgba(255,105,180,0.9);
     }
 
     /* Конфетти */
@@ -147,12 +131,12 @@
       100% { transform: translateY(-110vh); opacity: 0; }
     }
 
-    /* Оверлей с кнопкой */
+    /* Стартовый оверлей */
     #startOverlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.6);
       color: white;
       display: flex;
       justify-content: center;
@@ -166,76 +150,62 @@
       text-align: center;
     }
 
-    /* Поздравление (скрыто изначально) */
-    #congratulationOverlay {
+    /* Окно с поздравлением */
+    #messageOverlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
-      color: white;
+      background: rgba(0,0,0,0.85);
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      padding: 20px;
-      box-sizing: border-box;
+      align-items: center;
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.7s ease;
-      z-index: 11000;
-    }
-    #congratulationOverlay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    #congratulationOverlay img {
-      max-width: 80vw;
-      max-height: 50vh;
-      border-radius: 15px;
-      margin: 20px 0;
-      box-shadow: 0 0 20px rgba(255,105,180,0.8);
-    }
-
-    #congratulationOverlay p {
-      max-width: 700px;
-      font-size: 1.3em;
-      line-height: 1.5em;
+      visibility: hidden;
+      transition: opacity 0.6s ease;
+      z-index: 20000;
       text-align: center;
+      padding: 20px;
+    }
+    #messageOverlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    #messageOverlay p {
+      font-size: 1.4em;
+      max-width: 600px;
       margin-bottom: 20px;
-      font-weight: 500;
-      text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+      line-height: 1.6;
     }
-
-    /* Кнопка закрытия */
-    #congratulationOverlay button.closeBtn {
+    #messageOverlay img {
+      max-width: 300px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(255,105,180,0.7);
+    }
+    #closeMessage {
       position: absolute;
-      top: 20px;
-      right: 30px;
+      top: 20px; right: 30px;
       background: transparent;
+      color: white;
+      font-size: 2em;
       border: none;
-      font-size: 2.5em;
-      color: #ff80ab;
       cursor: pointer;
-      font-weight: bold;
-      line-height: 1;
-      transition: color 0.3s;
-    }
-    #congratulationOverlay button.closeBtn:hover {
-      color: #ff4081;
     }
   </style>
 </head>
 <body>
-  <!-- Размытый фон -->
+
+  <!-- Двигающийся размытый фон -->
   <div id="backgroundBlur"></div>
 
-  <!-- Оверлей с кнопкой -->
+  <!-- Стартовый экран -->
   <div id="startOverlay">
-    <h2>Готова ?</h2>
+    <h2>Готова?</h2>
     <button onclick="startCelebration()">Начать праздник</button>
   </div>
 
+  <!-- Основной контент -->
   <h1>Happy Birthday 💋</h1>
   <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
     title="YouTube video player" allowfullscreen></iframe>
@@ -243,22 +213,75 @@
     <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
       Нажми)
     </button>
-    <div class="timecode" onclick="showCongratulations()">
+    <div class="timecode" onclick="showMessage()">
       Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с
     </div>
   </div>
 
-  <!-- Поздравление -->
-  <div id="congratulationOverlay">
-    <button class="closeBtn" aria-label="Закрыть" onclick="hideCongratulations()">×</button>
-    <p>
-      Красавица моя, поздравляю тебя! Желаю всегда оставаться такой же прекрасной, умной и невероятной. Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья… ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋 ILY
-    </p>
-    <img src="https://i.pinimg.com/originals/c3/5e/2a/c35e2a71694f1cc4424d3bc28c68d03f.jpg" alt="Поздравительная картинка"/>
-  </div>
-
   <!-- Музыка -->
   <audio id="bgMusic" loop>
-    <source src="
+    <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
+  </audio>
 
-      
+  <!-- Оверлей с поздравлением -->
+  <div id="messageOverlay">
+    <button id="closeMessage" onclick="hideMessage()">✖</button>
+    <p>Красавица моя, поздравляю тебя! Желаю всегда оставаться такой же прекрасной, умной и невероятной. Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья… ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋 ILY</p>
+    <img src="https://i.pinimg.com/736x/7e/fe/40/7efe40d7151c180dcb7aa346b4ae4ec0.jpg" alt="Красивое поздравление">
+  </div>
+
+  <script>
+    function startCelebration() {
+      // Скрываем стартовый экран
+      document.getElementById('startOverlay').style.display = 'none';
+
+      // Запуск музыки с громкостью 10%
+      let music = document.getElementById('bgMusic');
+      music.volume = 0.1;
+      music.play();
+
+      // Запуск конфетти
+      setInterval(createConfetti, 200);
+
+      // Запуск шариков
+      setInterval(createBalloon, 1000);
+    }
+
+    // Конфетти
+    function createConfetti() {
+      const colors = ['#ff4081','#ff80ab','#ffd54f','#4fc3f7','#81c784','#ba68c8'];
+      const conf = document.createElement('div');
+      conf.classList.add('confetti');
+      conf.style.left = Math.random() * window.innerWidth + 'px';
+      conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      conf.style.width = conf.style.height = Math.random()*8+4+'px';
+      conf.style.animationDuration = Math.random()*3+3+'s';
+      document.body.appendChild(conf);
+      setTimeout(()=>conf.remove(), 6000);
+    }
+
+    // Шарики
+    function createBalloon() {
+      const colors = ['#ff4081','#ff80ab','#ffeb3b','#4fc3f7','#81c784','#ba68c8'];
+      const balloon = document.createElement('div');
+      balloon.classList.add('balloon');
+      balloon.style.left = Math.random() * (window.innerWidth-60) + 'px';
+      balloon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      balloon.style.animationDuration = Math.random()*4+6+'s';
+      document.body.appendChild(balloon);
+      setTimeout(()=>balloon.remove(), 8000);
+    }
+
+    // Показать поздравление
+    function showMessage() {
+      document.getElementById('messageOverlay').classList.add('active');
+    }
+
+    // Закрыть поздравление
+    function hideMessage() {
+      document.getElementById('messageOverlay').classList.remove('active');
+    }
+  </script>
+
+</body>
+</html>
