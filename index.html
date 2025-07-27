@@ -16,9 +16,10 @@
       color: #fff;
       margin: 0;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* Двигающийся размытый розовый фон */
+    /* Двигающийся розовый градиент */
     #backgroundBlur {
       position: fixed;
       top: 0; left: 0;
@@ -140,6 +141,17 @@
       100% { transform: translateY(-110vh); opacity: 0; }
     }
 
+    /* Фейерверки */
+    canvas#fireworksCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5000;
+    }
+
     /* Стартовый оверлей */
     #startOverlay {
       position: fixed;
@@ -166,15 +178,14 @@
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.85);
       display: flex;
-      justify-content: center;
+      justify-content: flex-start; /* смещаем немного влево */
       align-items: center;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.6s ease, transform 0.6s ease;
       transform: scale(0.95);
       z-index: 20000;
-      text-align: center;
-      padding: 20px;
+      padding-left: 10%; /* добавляем отступ, чтобы текст ушёл влево */
     }
     #messageOverlay.active {
       opacity: 1;
@@ -182,15 +193,15 @@
       transform: scale(1);
     }
 
-    /* Текст поздравления по центру и компактнее */
+    /* Текст поздравления чуть меньше */
     #messageOverlay p {
       font-size: 1em;
-      max-width: 80%;
+      max-width: 60%;
       background: rgba(255,255,255,0.1);
       padding: 15px 20px;
       border-radius: 12px;
       line-height: 1.5;
-      text-align: center;
+      text-align: left;
       text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
     }
 
@@ -207,6 +218,7 @@
     @media (max-width: 600px) {
       #messageOverlay p {
         font-size: 0.9em;
+        max-width: 80%;
       }
     }
   </style>
@@ -215,6 +227,9 @@
 
   <!-- Двигающийся размытый фон -->
   <div id="backgroundBlur"></div>
+
+  <!-- Фейерверки -->
+  <canvas id="fireworksCanvas"></canvas>
 
   <!-- Стартовый экран -->
   <div id="startOverlay">
@@ -258,6 +273,7 @@
       music.play();
       setInterval(createConfetti, 200);
       setInterval(createBalloon, 1000);
+      startFireworks(); // запускаем фейерверки
     }
 
     function createConfetti() {
@@ -290,8 +306,68 @@
     function hideMessage() {
       document.getElementById('messageOverlay').classList.remove('active');
     }
+
+    // --- Фейерверки ---
+    function startFireworks() {
+      const canvas = document.getElementById('fireworksCanvas');
+      const ctx = canvas.getContext('2d');
+      resizeCanvas();
+
+      window.addEventListener('resize', resizeCanvas);
+
+      let particles = [];
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function random(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function createFirework() {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height / 2;
+        const colors = ['#ff69b4', '#ff1493', '#ffffff', '#ffd1dc', '#ffb6c1'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        for (let i = 0; i < 50; i++) {
+          particles.push({
+            x: x,
+            y: y,
+            angle: Math.random() * 2 * Math.PI,
+            speed: random(1, 5),
+            radius: random(1, 3),
+            color: color,
+            life: 1
+          });
+        }
+      }
+
+      function updateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles = particles.filter(p => p.life > 0);
+
+        particles.forEach(p => {
+          p.x += Math.cos(p.angle) * p.speed;
+          p.y += Math.sin(p.angle) * p.speed;
+          p.life -= 0.01;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.life;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(updateParticles);
+      }
+
+      setInterval(createFirework, 1500);
+      updateParticles();
+    }
   </script>
 
 </body>
 </html>
-
