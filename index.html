@@ -1,295 +1,261 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Happy Birthday, My Love!</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Happy Birthday 💋</title>
+
+  <!-- Красивый шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
   <style>
-    html, body {
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      color: #fff;
       margin: 0;
-      padding: 0;
       overflow-x: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      background: #fff0f6;
-      min-height: 100vh;
+      position: relative;
     }
+
+    /* Двигающийся розовый градиент */
     #backgroundBlur {
       position: fixed;
       top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: radial-gradient(ellipse at center, #ffe6f2 0%, #ffb6c1 100%);
+      width: 100%; height: 100%;
+      background: linear-gradient(45deg, #ff69b4, #ff1493, #ff6ec7, #ffb6c1);
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
+      filter: blur(6px);
+      z-index: 0;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    /* Заголовок */
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 
+        0 0 10px rgba(255,255,255,0.8),
+        0 0 20px rgba(255,64,129,0.6),
+        0 0 30px rgba(255,105,180,0.8);
+      animation: glow 3s ease-in-out infinite alternate;
+      position: relative;
       z-index: 1;
-      filter: blur(50px);
-      pointer-events: none;
+      cursor: pointer;
     }
-    #fireworksCanvas {
+
+    @keyframes glow {
+      0% {
+        text-shadow: 
+          0 0 10px rgba(255,255,255,0.7),
+          0 0 20px rgba(255,105,180,0.6),
+          0 0 30px rgba(255,20,147,0.8);
+      }
+      100% {
+        text-shadow: 
+          0 0 15px rgba(255,255,255,1),
+          0 0 30px rgba(255,182,193,0.8),
+          0 0 40px rgba(255,105,180,1);
+      }
+    }
+
+    /* Видео */
+    iframe {
+      max-width: 90%;
+      height: 315px;
+      border: none;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .button {
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: linear-gradient(90deg,#ff69b4,#ff1493);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255,64,129,0.6);
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,105,180,0.8);
+    }
+
+    .timecode {
+      margin-top: 12px;
+      font-size: 1.1em;
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+    }
+
+    /* Конфетти */
+    .confetti {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 2;
+      width: 10px;
+      height: 10px;
+      background-color: pink;
+      top: -10px;
+      animation: fall 5s linear forwards;
+      opacity: 0.8;
+      z-index: 9999;
     }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+
+    /* Шарики */
+    .balloon {
+      position: fixed;
+      bottom: -100px;
+      width: 50px;
+      height: 70px;
+      border-radius: 50%;
+      background: pink;
+      animation: balloonFloat 8s linear infinite;
+      z-index: 9998;
+    }
+    @keyframes balloonFloat {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-110vh); opacity: 0; }
+    }
+
+    /* Фейерверки */
+    canvas#fireworksCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5000;
+    }
+
+    /* Стартовый оверлей */
     #startOverlay {
       position: fixed;
       top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(255, 240, 246, 0.98);
-      z-index: 10;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      color: white;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      text-align: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10000;
     }
     #startOverlay h2 {
+      margin-bottom: 20px;
       font-size: 2em;
-      color: #d81e5b;
-      margin-bottom: 30px;
-    }
-    #startBtn {
-      font-size: 1.2em;
-      padding: 15px 35px;
-      border-radius: 32px;
-      border: none;
-      background: linear-gradient(90deg, #ff69b4 40%, #d81e5b 100%);
-      color: #fff;
-      box-shadow: 0 4px 24px rgba(255, 105, 180, 0.4);
-      cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
-    }
-    #startBtn:active {
-      transform: scale(0.97);
-      background: #d81e5b;
-    }
-    #mainContent {
-      z-index: 3;
-      position: relative;
-      display: block;
-      text-align: center;
-      margin-top: 40px;
-    }
-    h1 {
-      font-size: 2.7em;
-      color: #d81e5b;
-      margin-bottom: 18px;
-      cursor: pointer;
-      user-select: none;
-      text-shadow: 0 2px 10px #ffd1ea;
-    }
-    iframe {
-      margin: 22px 0 18px 0;
-      width: 90vw;
-      max-width: 360px;
-      height: 205px;
-      border-radius: 16px;
-      border: none;
-      box-shadow: 0 3px 16px #ffb6c1a8;
-    }
-    .button {
-      margin: 20px 0 8px 0;
       text-align: center;
     }
-    .button button {
-      font-size: 1.1em;
-      background: #ffb6c1;
-      border: none;
-      border-radius: 28px;
-      padding: 11px 28px;
-      color: #6b3060;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-bottom: 7px;
-      box-shadow: 0 1px 6px #ffd1ea;
-    }
-    .button button:hover {
-      background: #ff69b4;
-      color: #fff;
-    }
-    .timecode {
-      font-size: 0.98em;
-      color: #6b3060;
-      opacity: 0.8;
-      user-select: text;
-    }
+
+    /* Окно с поздравлением */
     #messageOverlay {
       position: fixed;
       top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(255, 240, 246, 0.98);
-      z-index: 20;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
       display: flex;
+      justify-content: flex-start; /* смещаем немного влево */
       align-items: center;
-      justify-content: center;
-      text-align: left;
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
+      visibility: hidden;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: scale(0.95);
+      z-index: 20000;
+      padding-left: 10%; /* добавляем отступ, чтобы текст ушёл влево */
     }
     #messageOverlay.active {
       opacity: 1;
-      pointer-events: all;
+      visibility: visible;
+      transform: scale(1);
     }
+
+    /* Текст поздравления чуть меньше */
     #messageOverlay p {
-      background: #fff0f9;
-      border-radius: 20px;
-      padding: 30px 36px 26px 36px;
-      color: #6b3060;
-      font-size: 1.15em;
-      box-shadow: 0 2px 12px #ffb6c1a8;
-      max-width: 90vw;
-      min-width: 220px;
-    }
-    #closeMessage {
-      background: transparent;
-      border: none;
-      color: #d81e5b;
-      font-size: 2.1em;
-      position: absolute;
-      top: 22px;
-      right: 33px;
-      cursor: pointer;
-      z-index: 21;
-      transition: color 0.2s;
-    }
-    #closeMessage:hover { color: #ff69b4; }
-    #specialMomentsPage {
-      display: none;
-      z-index: 5;
-      position: relative;
-      text-align: center;
-      margin-top: 25px;
-    }
-    #backButton {
-      font-size: 1.2em;
-      margin-bottom: 18px;
-      background: #ffb6c1;
-      border: none;
-      border-radius: 23px;
-      padding: 10px 27px;
-      color: #6b3060;
-      cursor: pointer;
-    }
-    .heart-container {
-      background: #fff0f9;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      cursor: default;
-      transition: transform 0.3s ease;
-      margin: 15px;
-      flex-shrink: 0;
-    }
-    .heart-container:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(255, 105, 180, 0.6);
-    }
-    .heart-title {
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #d81e5b;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    .heart-text {
       font-size: 1em;
-      color: #6b3060;
-      text-align: center;
-      user-select: text;
+      max-width: 60%;
+      background: rgba(255,255,255,0.1);
+      padding: 15px 20px;
+      border-radius: 12px;
+      line-height: 1.5;
+      text-align: left;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
     }
-    iframe.heart-map {
-      border-radius: 15px;
-      width: 220px;
-      height: 140px;
+
+    #closeMessage {
+      position: absolute;
+      top: 20px; right: 30px;
+      background: transparent;
+      color: white;
+      font-size: 2em;
       border: none;
-      margin-top: 10px;
-      box-shadow: 0 3px 8px rgba(255, 105, 180, 0.3);
-      pointer-events: auto;
+      cursor: pointer;
     }
-    #heartsWrapper {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      justify-content: center;
-      padding-bottom: 20px;
-    }
-    /* Конфетти и шарики */
-    .confetti, .balloon {
-      position: fixed;
-      z-index: 9;
-      pointer-events: none;
-      will-change: transform;
-    }
-    .confetti {
-      top: -10px;
-      border-radius: 50%;
-      opacity: 0.9;
-      animation: confettiDown linear;
-    }
-    @keyframes confettiDown {
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0.2;
-      }
-    }
-    .balloon {
-      bottom: -70px;
-      width: 32px;
-      height: 44px;
-      border-radius: 32px 32px 32px 32px / 44px 44px 44px 44px;
-      background: #ff69b4;
-      opacity: 0.8;
-      box-shadow: 0 4px 22px #ffd1ea;
-      animation: balloonUp linear;
-    }
-    @keyframes balloonUp {
-      100% {
-        transform: translateY(-110vh);
-        opacity: 0.1;
-      }
-    }
+
     @media (max-width: 600px) {
-      h1 { font-size: 2em; }
-      iframe, .heart-map { max-width: 99vw; width: 97vw; }
-      #mainContent, #specialMomentsPage { margin-top: 14px; }
-      #messageOverlay p { padding: 15px 7vw 18px 7vw; }
+      #messageOverlay p {
+        font-size: 0.9em;
+        max-width: 80%;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Двигающийся размытый фон -->
   <div id="backgroundBlur"></div>
+
+  <!-- Фейерверки -->
   <canvas id="fireworksCanvas"></canvas>
 
+  <!-- Стартовый экран -->
   <div id="startOverlay">
     <h2>Готова?</h2>
-    <button id="startBtn">Начать праздник</button>
+    <button onclick="startCelebration()">Начать праздник</button>
   </div>
 
-  <div id="mainContent">
-    <h1 onclick="showMessage()">Happy Birthday 💋</h1>
-    <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
-      title="YouTube video player" allowfullscreen></iframe>
-    <div class="button">
-      <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
-        Нажми)
-      </button>
-      <div class="timecode">
-        Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с
-      </div>
-    </div>
-    <div class="button" style="margin-top: 30px;">
-      <button onclick="showSpecialMoments()">Особенные моменты ❤</button>
+  <!-- Основной контент -->
+  <h1 onclick="showMessage()">Happy Birthday 💋</h1>
+  <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
+    title="YouTube video player" allowfullscreen></iframe>
+  <div class="button">
+    <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
+      Нажми)
+    </button>
+    <div class="timecode">
+      Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с
     </div>
   </div>
 
+  <!-- Музыка -->
   <audio id="bgMusic" loop>
     <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Оверлей с поздравлением -->
   <div id="messageOverlay">
     <button id="closeMessage" onclick="hideMessage()">✖</button>
     <p>
@@ -299,49 +265,15 @@
     </p>
   </div>
 
-  <div id="specialMomentsPage">
-    <button id="backButton" onclick="showMainContent()">← Назад</button>
-    <div id="heartsWrapper">
-      <div class="heart-container">
-        <div class="heart-title">Школа Berufskolleg August Griese Löhne</div>
-        <iframe class="heart-map" src="https://yandex.ru/map-widget/v1/-/CCU2W1uP0B" allowfullscreen></iframe>
-        <div class="heart-text">Bahnhofstraße 90, 32584 Löhne</div>
-      </div>
-      <div class="heart-container">
-        <div class="heart-title">Где мы встретились</div>
-        <iframe class="heart-map" src="https://yandex.ru/map-widget/v1/-/CCU2W1uVMA" allowfullscreen></iframe>
-        <div class="heart-text">Magdeburger Str. 59 Herford</div>
-      </div>
-      <div class="heart-container">
-        <div class="heart-title">Где начали встречаться</div>
-        <div class="heart-text">
-          Magdeburger Str. 59 Herford<br>
-          <em>Первый год отношений ещё впереди ❤️</em>
-        </div>
-      </div>
-      <div class="heart-container">
-        <div class="heart-title">Где поцеловались</div>
-        <div class="heart-text">Magdeburger Str. 59 Herford</div>
-      </div>
-    </div>
-  </div>
-
   <script>
-    // Исправленный вариант с обработкой ошибок и поддержкой мобильных
-    document.getElementById('startBtn').addEventListener('click', startCelebration);
-
     function startCelebration() {
       document.getElementById('startOverlay').style.display = 'none';
       let music = document.getElementById('bgMusic');
       music.volume = 0.1;
-      music.play().catch(() => {
-        setTimeout(() => {
-          alert('Если музыка не заиграла — просто нажми "Начать праздник" ещё раз 😉');
-        }, 200);
-      });
+      music.play();
       setInterval(createConfetti, 200);
       setInterval(createBalloon, 1000);
-      startFireworks();
+      startFireworks(); // запускаем фейерверки
     }
 
     function createConfetti() {
@@ -349,22 +281,22 @@
       const conf = document.createElement('div');
       conf.classList.add('confetti');
       conf.style.left = Math.random() * window.innerWidth + 'px';
-      conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      conf.style.width = conf.style.height = (Math.random() * 8 + 4) + 'px';
-      conf.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      conf.style.width = conf.style.height = Math.random()*8+4+'px';
+      conf.style.animationDuration = Math.random()*3+3+'s';
       document.body.appendChild(conf);
-      setTimeout(() => conf.remove(), 6000);
+      setTimeout(()=>conf.remove(), 6000);
     }
 
     function createBalloon() {
       const colors = ['#ff69b4','#ff1493','#ffb6c1','#ff6ec7','#ffc0cb'];
       const balloon = document.createElement('div');
       balloon.classList.add('balloon');
-      balloon.style.left = Math.random() * (window.innerWidth - 60) + 'px';
-      balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      balloon.style.animationDuration = (Math.random() * 4 + 6) + 's';
+      balloon.style.left = Math.random() * (window.innerWidth-60) + 'px';
+      balloon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      balloon.style.animationDuration = Math.random()*4+6+'s';
       document.body.appendChild(balloon);
-      setTimeout(() => balloon.remove(), 8000);
+      setTimeout(()=>balloon.remove(), 8000);
     }
 
     function showMessage() {
@@ -373,16 +305,6 @@
 
     function hideMessage() {
       document.getElementById('messageOverlay').classList.remove('active');
-    }
-
-    function showSpecialMoments() {
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('specialMomentsPage').style.display = 'block';
-    }
-
-    function showMainContent() {
-      document.getElementById('specialMomentsPage').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
     }
 
     // --- Фейерверки ---
@@ -406,490 +328,44 @@
 
       function createFirework() {
         const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height * 0.6 + canvas.height * 0.1;
-        const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
-        for (let i = 0; i < 40; i++) {
-          const angle = (Math.PI * 2) * (i / 40);
-          const speed = random(2, 6);
+        const y = Math.random() * canvas.height / 2;
+        const colors = ['#ff69b4', '#ff1493', '#ffffff', '#ffd1dc', '#ffb6c1'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        for (let i = 0; i < 50; i++) {
           particles.push({
-            x, y,
-            dx: Math.cos(angle) * speed,
-            dy: Math.sin(angle) * speed,
-            color,
-            alpha: 1
+            x: x,
+            y: y,
+            angle: Math.random() * 2 * Math.PI,
+            speed: random(1, 5),
+            radius: random(1, 3),
+            color: color,
+            life: 1
           });
         }
       }
 
-      setInterval(createFirework, 1250);
-
-      function draw() {
+      function updateParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p, i) => {
-          ctx.globalAlpha = Math.max(p.alpha, 0);
+        particles = particles.filter(p => p.life > 0);
+
+        particles.forEach(p => {
+          p.x += Math.cos(p.angle) * p.speed;
+          p.y += Math.sin(p.angle) * p.speed;
+          p.life -= 0.01;
+
           ctx.beginPath();
-          ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI);
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
           ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.life;
           ctx.fill();
-
-          p.x += p.dx;
-          p.y += p.dy;
-          p.dy += 0.06; // gravity
-          p.alpha -= 0.015;
-          if (p.alpha <= 0) particles.splice(i, 1);
         });
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(draw);
-      }
-      draw();
-    }
-  </script>
 
-</body>
-</html><!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>Happy Birthday, My Love!</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      background: #fff0f6;
-      min-height: 100vh;
-    }
-    #backgroundBlur {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: radial-gradient(ellipse at center, #ffe6f2 0%, #ffb6c1 100%);
-      z-index: 1;
-      filter: blur(50px);
-      pointer-events: none;
-    }
-    #fireworksCanvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 2;
-    }
-    #startOverlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(255, 240, 246, 0.98);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    #startOverlay h2 {
-      font-size: 2em;
-      color: #d81e5b;
-      margin-bottom: 30px;
-    }
-    #startBtn {
-      font-size: 1.2em;
-      padding: 15px 35px;
-      border-radius: 32px;
-      border: none;
-      background: linear-gradient(90deg, #ff69b4 40%, #d81e5b 100%);
-      color: #fff;
-      box-shadow: 0 4px 24px rgba(255, 105, 180, 0.4);
-      cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
-    }
-    #startBtn:active {
-      transform: scale(0.97);
-      background: #d81e5b;
-    }
-    #mainContent {
-      z-index: 3;
-      position: relative;
-      display: block;
-      text-align: center;
-      margin-top: 40px;
-    }
-    h1 {
-      font-size: 2.7em;
-      color: #d81e5b;
-      margin-bottom: 18px;
-      cursor: pointer;
-      user-select: none;
-      text-shadow: 0 2px 10px #ffd1ea;
-    }
-    iframe {
-      margin: 22px 0 18px 0;
-      width: 90vw;
-      max-width: 360px;
-      height: 205px;
-      border-radius: 16px;
-      border: none;
-      box-shadow: 0 3px 16px #ffb6c1a8;
-    }
-    .button {
-      margin: 20px 0 8px 0;
-      text-align: center;
-    }
-    .button button {
-      font-size: 1.1em;
-      background: #ffb6c1;
-      border: none;
-      border-radius: 28px;
-      padding: 11px 28px;
-      color: #6b3060;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-bottom: 7px;
-      box-shadow: 0 1px 6px #ffd1ea;
-    }
-    .button button:hover {
-      background: #ff69b4;
-      color: #fff;
-    }
-    .timecode {
-      font-size: 0.98em;
-      color: #6b3060;
-      opacity: 0.8;
-      user-select: text;
-    }
-    #messageOverlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(255, 240, 246, 0.98);
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: left;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
-    #messageOverlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    #messageOverlay p {
-      background: #fff0f9;
-      border-radius: 20px;
-      padding: 30px 36px 26px 36px;
-      color: #6b3060;
-      font-size: 1.15em;
-      box-shadow: 0 2px 12px #ffb6c1a8;
-      max-width: 90vw;
-      min-width: 220px;
-    }
-    #closeMessage {
-      background: transparent;
-      border: none;
-      color: #d81e5b;
-      font-size: 2.1em;
-      position: absolute;
-      top: 22px;
-      right: 33px;
-      cursor: pointer;
-      z-index: 21;
-      transition: color 0.2s;
-    }
-    #closeMessage:hover { color: #ff69b4; }
-    #specialMomentsPage {
-      display: none;
-      z-index: 5;
-      position: relative;
-      text-align: center;
-      margin-top: 25px;
-    }
-    #backButton {
-      font-size: 1.2em;
-      margin-bottom: 18px;
-      background: #ffb6c1;
-      border: none;
-      border-radius: 23px;
-      padding: 10px 27px;
-      color: #6b3060;
-      cursor: pointer;
-    }
-    .heart-container {
-      background: #fff0f9;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      cursor: default;
-      transition: transform 0.3s ease;
-      margin: 15px;
-      flex-shrink: 0;
-    }
-    .heart-container:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(255, 105, 180, 0.6);
-    }
-    .heart-title {
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #d81e5b;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    .heart-text {
-      font-size: 1em;
-      color: #6b3060;
-      text-align: center;
-      user-select: text;
-    }
-    iframe.heart-map {
-      border-radius: 15px;
-      width: 220px;
-      height: 140px;
-      border: none;
-      margin-top: 10px;
-      box-shadow: 0 3px 8px rgba(255, 105, 180, 0.3);
-      pointer-events: auto;
-    }
-    #heartsWrapper {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      justify-content: center;
-      padding-bottom: 20px;
-    }
-    /* Конфетти и шарики */
-    .confetti, .balloon {
-      position: fixed;
-      z-index: 9;
-      pointer-events: none;
-      will-change: transform;
-    }
-    .confetti {
-      top: -10px;
-      border-radius: 50%;
-      opacity: 0.9;
-      animation: confettiDown linear;
-    }
-    @keyframes confettiDown {
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0.2;
-      }
-    }
-    .balloon {
-      bottom: -70px;
-      width: 32px;
-      height: 44px;
-      border-radius: 32px 32px 32px 32px / 44px 44px 44px 44px;
-      background: #ff69b4;
-      opacity: 0.8;
-      box-shadow: 0 4px 22px #ffd1ea;
-      animation: balloonUp linear;
-    }
-    @keyframes balloonUp {
-      100% {
-        transform: translateY(-110vh);
-        opacity: 0.1;
-      }
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 2em; }
-      iframe, .heart-map { max-width: 99vw; width: 97vw; }
-      #mainContent, #specialMomentsPage { margin-top: 14px; }
-      #messageOverlay p { padding: 15px 7vw 18px 7vw; }
-    }
-  </style>
-</head>
-<body>
-
-  <div id="backgroundBlur"></div>
-  <canvas id="fireworksCanvas"></canvas>
-
-  <div id="startOverlay">
-    <h2>Готова?</h2>
-    <button id="startBtn">Начать праздник</button>
-  </div>
-
-  <div id="mainContent">
-    <h1 onclick="showMessage()">Happy Birthday 💋</h1>
-    <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
-      title="YouTube video player" allowfullscreen></iframe>
-    <div class="button">
-      <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
-        Нажми)
-      </button>
-      <div class="timecode">
-        Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с
-      </div>
-    </div>
-    <div class="button" style="margin-top: 30px;">
-      <button onclick="showSpecialMoments()">Особенные моменты ❤</button>
-    </div>
-  </div>
-
-  <audio id="bgMusic" loop>
-    <source src="Ирина Аллегрова - С днем рождения.mp3" type="audio/mpeg">
-  </audio>
-
-  <div id="messageOverlay">
-    <button id="closeMessage" onclick="hideMessage()">✖</button>
-    <p>
-      Красавица моя, поздравляю тебя! Желаю всегда оставаться такой же прекрасной, умной и невероятной.  
-      Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья…  
-      ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋 ILY
-    </p>
-  </div>
-
-  <div id="specialMomentsPage">
-    <button id="backButton" onclick="showMainContent()">← Назад</button>
-    <div id="heartsWrapper">
-      <div class="heart-container">
-        <div class="heart-title">Школа Berufskolleg August Griese Löhne</div>
-        <iframe class="heart-map" src="https://yandex.ru/map-widget/v1/-/CCU2W1uP0B" allowfullscreen></iframe>
-        <div class="heart-text">Bahnhofstraße 90, 32584 Löhne</div>
-      </div>
-      <div class="heart-container">
-        <div class="heart-title">Где мы встретились</div>
-        <iframe class="heart-map" src="https://yandex.ru/map-widget/v1/-/CCU2W1uVMA" allowfullscreen></iframe>
-        <div class="heart-text">Magdeburger Str. 59 Herford</div>
-      </div>
-      <div class="heart-container">
-        <div class="heart-title">Где начали встречаться</div>
-        <div class="heart-text">
-          Magdeburger Str. 59 Herford<br>
-          <em>Первый год отношений ещё впереди ❤️</em>
-        </div>
-      </div>
-      <div class="heart-container">
-        <div class="heart-title">Где поцеловались</div>
-        <div class="heart-text">Magdeburger Str. 59 Herford</div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Исправленный вариант с обработкой ошибок и поддержкой мобильных
-    document.getElementById('startBtn').addEventListener('click', startCelebration);
-
-    function startCelebration() {
-      document.getElementById('startOverlay').style.display = 'none';
-      let music = document.getElementById('bgMusic');
-      music.volume = 0.1;
-      music.play().catch(() => {
-        setTimeout(() => {
-          alert('Если музыка не заиграла — просто нажми "Начать праздник" ещё раз 😉');
-        }, 200);
-      });
-      setInterval(createConfetti, 200);
-      setInterval(createBalloon, 1000);
-      startFireworks();
-    }
-
-    function createConfetti() {
-      const colors = ['#ff69b4','#ff1493','#ffb6c1','#ffc0cb','#ff6ec7'];
-      const conf = document.createElement('div');
-      conf.classList.add('confetti');
-      conf.style.left = Math.random() * window.innerWidth + 'px';
-      conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      conf.style.width = conf.style.height = (Math.random() * 8 + 4) + 'px';
-      conf.style.animationDuration = (Math.random() * 3 + 3) + 's';
-      document.body.appendChild(conf);
-      setTimeout(() => conf.remove(), 6000);
-    }
-
-    function createBalloon() {
-      const colors = ['#ff69b4','#ff1493','#ffb6c1','#ff6ec7','#ffc0cb'];
-      const balloon = document.createElement('div');
-      balloon.classList.add('balloon');
-      balloon.style.left = Math.random() * (window.innerWidth - 60) + 'px';
-      balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      balloon.style.animationDuration = (Math.random() * 4 + 6) + 's';
-      document.body.appendChild(balloon);
-      setTimeout(() => balloon.remove(), 8000);
-    }
-
-    function showMessage() {
-      document.getElementById('messageOverlay').classList.add('active');
-    }
-
-    function hideMessage() {
-      document.getElementById('messageOverlay').classList.remove('active');
-    }
-
-    function showSpecialMoments() {
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('specialMomentsPage').style.display = 'block';
-    }
-
-    function showMainContent() {
-      document.getElementById('specialMomentsPage').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-    }
-
-    // --- Фейерверки ---
-    function startFireworks() {
-      const canvas = document.getElementById('fireworksCanvas');
-      const ctx = canvas.getContext('2d');
-      resizeCanvas();
-
-      window.addEventListener('resize', resizeCanvas);
-
-      let particles = [];
-
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        requestAnimationFrame(updateParticles);
       }
 
-      function random(min, max) {
-        return Math.random() * (max - min) + min;
-      }
-
-      function createFirework() {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height * 0.6 + canvas.height * 0.1;
-        const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
-        for (let i = 0; i < 40; i++) {
-          const angle = (Math.PI * 2) * (i / 40);
-          const speed = random(2, 6);
-          particles.push({
-            x, y,
-            dx: Math.cos(angle) * speed,
-            dy: Math.sin(angle) * speed,
-            color,
-            alpha: 1
-          });
-        }
-      }
-
-      setInterval(createFirework, 1250);
-
-      function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p, i) => {
-          ctx.globalAlpha = Math.max(p.alpha, 0);
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI);
-          ctx.fillStyle = p.color;
-          ctx.fill();
-
-          p.x += p.dx;
-          p.y += p.dy;
-          p.dy += 0.06; // gravity
-          p.alpha -= 0.015;
-          if (p.alpha <= 0) particles.splice(i, 1);
-        });
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(draw);
-      }
-      draw();
+      setInterval(createFirework, 1500);
+      updateParticles();
     }
   </script>
 
