@@ -18,12 +18,12 @@
       overflow-x: hidden;
     }
 
-    /* Двигающийся размытый фон */
+    /* Двигающийся размытый фон (красные переливы) */
     #backgroundBlur {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: linear-gradient(45deg, #ffdde1, #ee9ca7, #ff80ab, #ffb6c1);
+      background: linear-gradient(45deg, #ff0000, #b71c1c, #d32f2f, #f44336);
       background-size: 400% 400%;
       animation: gradientMove 12s ease infinite;
       filter: blur(6px);
@@ -86,7 +86,7 @@
     button {
       padding: 15px 30px;
       font-size: 18px;
-      background: linear-gradient(90deg,#ff4081,#ff80ab);
+      background: linear-gradient(90deg,#ff1744,#d50000);
       color: white;
       border: none;
       border-radius: 12px;
@@ -172,7 +172,7 @@
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.6s ease, transform 0.6s ease;
-      transform: scale(0.9);
+      transform: scale(0.95);
       z-index: 20000;
       text-align: center;
       padding: 20px;
@@ -182,18 +182,26 @@
       visibility: visible;
       transform: scale(1);
     }
+
+    /* Текст поздравления стал компактнее и удобнее для чтения */
     #messageOverlay p {
-      font-size: 1.4em;
-      max-width: 600px;
+      font-size: 1.1em; /* чуть меньше, чтобы точно влезало */
+      max-width: 90%;
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 12px;
+      line-height: 1.5;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
       margin-bottom: 20px;
-      line-height: 1.6;
     }
+
     #messageOverlay img {
-      max-width: 300px;
+      max-width: 250px;
       border-radius: 15px;
       margin-bottom: 20px;
       box-shadow: 0 0 20px rgba(255,105,180,0.7);
     }
+
     #closeMessage {
       position: absolute;
       top: 20px; right: 30px;
@@ -203,6 +211,17 @@
       border: none;
       cursor: pointer;
     }
+
+    /* Чтобы всё было читаемо на маленьких экранах */
+    @media (max-width: 600px) {
+      #messageOverlay p {
+        font-size: 1em;
+      }
+      #messageOverlay img {
+        max-width: 180px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -237,7 +256,11 @@
   <!-- Оверлей с поздравлением -->
   <div id="messageOverlay">
     <button id="closeMessage" onclick="hideMessage()">✖</button>
-    <p>Красавица моя, поздравляю тебя! Желаю всегда оставаться такой же прекрасной, умной и невероятной. Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья… ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋 ILY</p>
+    <p>
+      Красавица моя, поздравляю тебя! Желаю всегда оставаться такой же прекрасной, умной и невероятной.  
+      Пусть в твоей жизни будет как можно больше радости, сюрпризов и поводов для счастья…  
+      ну и чуть-чуть меня рядом, чтобы всё это случалось! 😘💋 ILY
+    </p>
     <img src="https://i.pinimg.com/736x/7e/fe/40/7efe40d7151c180dcb7aa346b4ae4ec0.jpg" alt="Красивое поздравление">
   </div>
 
@@ -257,7 +280,7 @@
     }
 
     function createConfetti() {
-      const colors = ['#ff4081','#ff80ab','#ffd54f','#4fc3f7','#81c784','#ba68c8'];
+      const colors = ['#ff1744','#d50000','#ff5252','#f44336','#ef5350','#e57373'];
       const conf = document.createElement('div');
       conf.classList.add('confetti');
       conf.style.left = Math.random() * window.innerWidth + 'px';
@@ -269,7 +292,7 @@
     }
 
     function createBalloon() {
-      const colors = ['#ff4081','#ff80ab','#ffeb3b','#4fc3f7','#81c784','#ba68c8'];
+      const colors = ['#ff1744','#d50000','#ff8a80','#e53935','#ef5350'];
       const balloon = document.createElement('div');
       balloon.classList.add('balloon');
       balloon.style.left = Math.random() * (window.innerWidth-60) + 'px';
