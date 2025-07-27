@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Happy Birthday 💋</title>
 
-  <!-- Подключаем шрифт Pacifico -->
+  <!-- Шрифт -->
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
   <style>
@@ -14,10 +14,11 @@
       text-align: center;
       padding: 30px;
       color: #fff;
-      overflow: hidden;
+      margin: 0;
+      overflow-x: hidden;
     }
 
-    /* Движущийся фон */
+    /* Двигающийся размытый фон */
     #backgroundBlur {
       position: fixed;
       top: 0; left: 0;
@@ -35,6 +36,7 @@
       100% {background-position: 0% 50%;}
     }
 
+    /* Заголовок */
     h1 {
       font-family: 'Pacifico', cursive;
       font-size: 3em;
@@ -44,6 +46,8 @@
         0 0 20px rgba(255,64,129,0.6),
         0 0 30px rgba(255,105,180,0.8);
       animation: glow 3s ease-in-out infinite alternate;
+      position: relative;
+      z-index: 1;
     }
 
     @keyframes glow {
@@ -61,6 +65,7 @@
       }
     }
 
+    /* Видео */
     iframe {
       max-width: 90%;
       height: 315px;
@@ -68,10 +73,14 @@
       margin-bottom: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
     }
 
     .button {
       margin-top: 10px;
+      position: relative;
+      z-index: 1;
     }
 
     button {
@@ -162,7 +171,8 @@
       align-items: center;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: scale(0.9);
       z-index: 20000;
       text-align: center;
       padding: 20px;
@@ -170,6 +180,7 @@
     #messageOverlay.active {
       opacity: 1;
       visibility: visible;
+      transform: scale(1);
     }
     #messageOverlay p {
       font-size: 1.4em;
@@ -235,19 +246,16 @@
       // Скрываем стартовый экран
       document.getElementById('startOverlay').style.display = 'none';
 
-      // Запуск музыки с громкостью 10%
+      // Запуск музыки
       let music = document.getElementById('bgMusic');
       music.volume = 0.1;
       music.play();
 
-      // Запуск конфетти
+      // Запуск конфетти и шариков
       setInterval(createConfetti, 200);
-
-      // Запуск шариков
       setInterval(createBalloon, 1000);
     }
 
-    // Конфетти
     function createConfetti() {
       const colors = ['#ff4081','#ff80ab','#ffd54f','#4fc3f7','#81c784','#ba68c8'];
       const conf = document.createElement('div');
@@ -260,7 +268,6 @@
       setTimeout(()=>conf.remove(), 6000);
     }
 
-    // Шарики
     function createBalloon() {
       const colors = ['#ff4081','#ff80ab','#ffeb3b','#4fc3f7','#81c784','#ba68c8'];
       const balloon = document.createElement('div');
@@ -272,12 +279,10 @@
       setTimeout(()=>balloon.remove(), 8000);
     }
 
-    // Показать поздравление
     function showMessage() {
       document.getElementById('messageOverlay').classList.add('active');
     }
 
-    // Закрыть поздравление
     function hideMessage() {
       document.getElementById('messageOverlay').classList.remove('active');
     }
