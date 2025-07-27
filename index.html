@@ -9,7 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
   <style>
-    /* Фон с градиентом и размытием */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      color: #fff;
+      margin: 0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Двигающийся розовый градиент */
     #backgroundBlur {
       position: fixed;
       top: 0; left: 0;
@@ -20,40 +30,11 @@
       filter: blur(6px);
       z-index: 0;
     }
+
     @keyframes gradientMove {
       0% {background-position: 0% 50%;}
       50% {background-position: 100% 50%;}
       100% {background-position: 0% 50%;}
-    }
-
-    /* Основной контейнер, поверх фона */
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 30px;
-      color: #fff;
-      margin: 0;
-      overflow-x: hidden;
-      position: relative;
-      z-index: 10; /* выше фона */
-      background: transparent;
-    }
-
-    /* Контейнеры экранов */
-    #mainContent, #heartsContent {
-      max-width: 900px;
-      margin: auto;
-      background: rgba(0,0,0,0.5);
-      border-radius: 20px;
-      padding: 20px;
-      box-sizing: border-box;
-      color: white;
-      display: none;
-      position: relative;
-      z-index: 10;
-    }
-    #mainContent.active, #heartsContent.active {
-      display: block;
     }
 
     /* Заголовок */
@@ -66,8 +47,11 @@
         0 0 20px rgba(255,64,129,0.6),
         0 0 30px rgba(255,105,180,0.8);
       animation: glow 3s ease-in-out infinite alternate;
+      position: relative;
+      z-index: 1;
       cursor: pointer;
     }
+
     @keyframes glow {
       0% {
         text-shadow: 
@@ -83,6 +67,7 @@
       }
     }
 
+    /* Видео */
     iframe {
       max-width: 90%;
       height: 315px;
@@ -90,11 +75,16 @@
       margin-bottom: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
     }
 
     .button {
       margin-top: 10px;
+      position: relative;
+      z-index: 1;
     }
+
     button {
       padding: 15px 30px;
       font-size: 18px;
@@ -114,6 +104,7 @@
     .timecode {
       margin-top: 12px;
       font-size: 1.1em;
+      color: #fff;
       font-weight: bold;
       text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
     }
@@ -161,28 +152,48 @@
       z-index: 5000;
     }
 
-    /* Оверлей поздравления */
+    /* Стартовый оверлей */
+    #startOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10000;
+    }
+    #startOverlay h2 {
+      margin-bottom: 20px;
+      font-size: 2em;
+      text-align: center;
+    }
+
+    /* Окно с поздравлением */
     #messageOverlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.85);
       display: flex;
-      justify-content: flex-start;
+      justify-content: flex-start; /* смещаем немного влево */
       align-items: center;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.6s ease, transform 0.6s ease;
       transform: scale(0.95);
       z-index: 20000;
-      padding-left: 10%;
-      color: white;
+      padding-left: 10%; /* добавляем отступ, чтобы текст ушёл влево */
     }
     #messageOverlay.active {
       opacity: 1;
       visibility: visible;
       transform: scale(1);
     }
+
+    /* Текст поздравления чуть меньше */
     #messageOverlay p {
       font-size: 1em;
       max-width: 60%;
@@ -190,8 +201,10 @@
       padding: 15px 20px;
       border-radius: 12px;
       line-height: 1.5;
+      text-align: left;
       text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
     }
+
     #closeMessage {
       position: absolute;
       top: 20px; right: 30px;
@@ -202,82 +215,38 @@
       cursor: pointer;
     }
 
-    /* Сердечки для воспоминаний */
-    .heart {
-      width: 20px;
-      height: 20px;
-      background-color: red;
-      position: fixed;
-      bottom: 0;
-      transform: rotate(45deg);
-      animation: floatUp 5s linear forwards;
-      pointer-events: none;
-      z-index: 15000;
+    @media (max-width: 600px) {
+      #messageOverlay p {
+        font-size: 0.9em;
+        max-width: 80%;
+      }
     }
-    .heart::before,
-    .heart::after {
-      content: "";
-      width: 20px;
-      height: 20px;
-      background-color: red;
-      position: absolute;
-      border-radius: 50%;
-    }
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
-    @keyframes floatUp {
-      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
-      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
-    }
-
-    /* Фото 3 месяца */
-    img.photo-3m {
-      max-width: 90%;
-      border-radius: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      margin: 15px 0;
-    }
-
   </style>
 </head>
 <body>
 
-  <!-- Фон -->
+  <!-- Двигающийся размытый фон -->
   <div id="backgroundBlur"></div>
 
   <!-- Фейерверки -->
   <canvas id="fireworksCanvas"></canvas>
 
-  <!-- Главный экран -->
-  <div id="mainContent" class="active">
-    <h1 onclick="showMessage()">Happy Birthday 💋</h1>
-    <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI" allowfullscreen></iframe>
-    <div class="button">
-      <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">Нажми)</button>
-      <div class="timecode">Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с</div>
-    </div>
-    <div class="button" style="margin-top: 25px;">
-      <button onclick="showHearts()">Наши моменты 💖</button>
-    </div>
+  <!-- Стартовый экран -->
+  <div id="startOverlay">
+    <h2>Готова?</h2>
+    <button onclick="startCelebration()">Начать праздник</button>
   </div>
 
-  <!-- Воспоминания -->
-  <div id="heartsContent">
-    <h2>Наши воспоминания</h2>
-    <p>📍 <a href="https://maps.app.goo.gl/YkwfSRoBXZaQ71Ev7" target="_blank" rel="noopener noreferrer">Первый раз увиделись</a></p>
-    <p>💋 <a href="https://maps.app.goo.gl/EPx6xSbdcXwkVXU99" target="_blank" rel="noopener noreferrer">Первый поцелуй</a></p>
-    <p>📸 3 месяца вместе:</p>
-    <img src="your-photo.jpg" alt="3 месяца вместе" class="photo-3m" />
-    <p>⏳ 1 год: 1 год впереди 💖</p>
-    <p>💍 В будущем: The Future 💍</p>
-    <div class="button">
-      <button onclick="showMain()">Назад к поздравлению</button>
+  <!-- Основной контент -->
+  <h1 onclick="showMessage()">Happy Birthday 💋</h1>
+  <iframe src="https://www.youtube.com/embed/kVVQ2DQqJgI"
+    title="YouTube video player" allowfullscreen></iframe>
+  <div class="button">
+    <button onclick="window.open('https://kinogo.ec/29721-novyj-chelovek-pauk-vysokoe-naprjazhenie-n2.html','_blank')">
+      Нажми)
+    </button>
+    <div class="timecode">
+      Таймкод: с 1 ч 44 мин 35 с до 1 ч 45 мин 59 с
     </div>
   </div>
 
@@ -297,54 +266,53 @@
   </div>
 
   <script>
-    const mainContent = document.getElementById('mainContent');
-    const heartsContent = document.getElementById('heartsContent');
-    const music = document.getElementById('bgMusic');
-
-    let confettiInterval, balloonInterval, fireworksInterval, heartsInterval;
-
     function startCelebration() {
+      document.getElementById('startOverlay').style.display = 'none';
+      let music = document.getElementById('bgMusic');
       music.volume = 0.1;
       music.play();
-      startConfetti();
-      startBalloons();
-      startFireworks();
+      setInterval(createConfetti, 200);
+      setInterval(createBalloon, 1000);
+      startFireworks(); // запускаем фейерверки
     }
 
-    function startConfetti() {
-      confettiInterval = setInterval(() => {
-        const colors = ['#ff69b4','#ff1493','#ffb6c1','#ffc0cb','#ff6ec7'];
-        const conf = document.createElement('div');
-        conf.classList.add('confetti');
-        conf.style.left = Math.random() * window.innerWidth + 'px';
-        conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-        conf.style.width = conf.style.height = Math.random()*8+4+'px';
-        conf.style.animationDuration = Math.random()*3+3+'s';
-        document.body.appendChild(conf);
-        setTimeout(()=>conf.remove(), 6000);
-      }, 200);
+    function createConfetti() {
+      const colors = ['#ff69b4','#ff1493','#ffb6c1','#ffc0cb','#ff6ec7'];
+      const conf = document.createElement('div');
+      conf.classList.add('confetti');
+      conf.style.left = Math.random() * window.innerWidth + 'px';
+      conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      conf.style.width = conf.style.height = Math.random()*8+4+'px';
+      conf.style.animationDuration = Math.random()*3+3+'s';
+      document.body.appendChild(conf);
+      setTimeout(()=>conf.remove(), 6000);
     }
-    function stopConfetti() { clearInterval(confettiInterval); }
 
-    function startBalloons() {
-      balloonInterval = setInterval(() => {
-        const colors = ['#ff69b4','#ff1493','#ffb6c1','#ff6ec7','#ffc0cb'];
-        const balloon = document.createElement('div');
-        balloon.classList.add('balloon');
-        balloon.style.left = Math.random() * (window.innerWidth-60) + 'px';
-        balloon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-        balloon.style.animationDuration = Math.random()*4+6+'s';
-        document.body.appendChild(balloon);
-        setTimeout(()=>balloon.remove(), 8000);
-      }, 1000);
+    function createBalloon() {
+      const colors = ['#ff69b4','#ff1493','#ffb6c1','#ff6ec7','#ffc0cb'];
+      const balloon = document.createElement('div');
+      balloon.classList.add('balloon');
+      balloon.style.left = Math.random() * (window.innerWidth-60) + 'px';
+      balloon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      balloon.style.animationDuration = Math.random()*4+6+'s';
+      document.body.appendChild(balloon);
+      setTimeout(()=>balloon.remove(), 8000);
     }
-    function stopBalloons() { clearInterval(balloonInterval); }
 
-    // Фейерверки
+    function showMessage() {
+      document.getElementById('messageOverlay').classList.add('active');
+    }
+
+    function hideMessage() {
+      document.getElementById('messageOverlay').classList.remove('active');
+    }
+
+    // --- Фейерверки ---
     function startFireworks() {
       const canvas = document.getElementById('fireworksCanvas');
       const ctx = canvas.getContext('2d');
       resizeCanvas();
+
       window.addEventListener('resize', resizeCanvas);
 
       let particles = [];
@@ -396,61 +364,10 @@
         requestAnimationFrame(updateParticles);
       }
 
-      fireworksInterval = setInterval(createFirework, 1500);
+      setInterval(createFirework, 1500);
       updateParticles();
     }
-    function stopFireworks() { clearInterval(fireworksInterval); }
-
-    // Сердечки для воспоминаний
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.style.left = Math.random() * window.innerWidth + 'px';
-      heart.style.animationDuration = (3 + Math.random() * 2) + 's';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
-    }
-    function startHearts() {
-      heartsInterval = setInterval(createHeart, 300);
-    }
-    function stopHearts() {
-      clearInterval(heartsInterval);
-      document.querySelectorAll('.heart').forEach(h => h.remove());
-    }
-
-    // Показать воспоминания, выключить остальные эффекты
-    function showHearts() {
-      mainContent.classList.remove('active');
-      heartsContent.classList.add('active');
-
-      stopConfetti();
-      stopBalloons();
-      stopFireworks();
-      startHearts();
-    }
-    // Вернуться на главный экран
-    function showMain() {
-      heartsContent.classList.remove('active');
-      mainContent.classList.add('active');
-
-      stopHearts();
-      startConfetti();
-      startBalloons();
-      startFireworks();
-    }
-
-    // Поздравление
-    function showMessage() {
-      document.getElementById('messageOverlay').classList.add('active');
-    }
-    function hideMessage() {
-      document.getElementById('messageOverlay').classList.remove('active');
-    }
-
-    // Запускаем эффекты и музыку после загрузки страницы
-    window.onload = () => {
-      startCelebration();
-    };
   </script>
+
 </body>
 </html>
